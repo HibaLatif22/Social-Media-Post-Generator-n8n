@@ -1,0 +1,301 @@
+{
+  "name": "Social Media Post Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "bearer YOUR_GROQ_API_KEY"
+            },
+            {
+              "name": "Content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Create a {{$json.Platform}} post.\\n\\nTopic: {{$json.Topic}}\\nTone: {{$json.Tone}}\\n\\nRequirements:\\n- Strong Hook\\n- Main Content\\n- Call To Action\\n- 5 Relevant Hashtags\\n\\nKeep it engaging, efficient and professional.Keep it concise and short about 3 to 5 lines.\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "YOUR_NODE_ID",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fa41eb02-23ce-4e25-9ab7-6bea19e8b734",
+              "name": "generated_post",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        0
+      ],
+      "id": "ac4f61ad-9469-4fb3-be25-a06d1683dfdc",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Vh-01z-azeolS3kPHhmFS20L6ewLTYYMsv0VOf40pGo",
+          "mode": "list",
+          "cachedResultName": "AI social Media Post",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Vh-01z-azeolS3kPHhmFS20L6ewLTYYMsv0VOf40pGo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Vh-01z-azeolS3kPHhmFS20L6ewLTYYMsv0VOf40pGo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{$now}}",
+            "Post": "={{ $json.generated_post }}",
+            "Topic": "={{ $('On form submission').item.json.Topic }}",
+            "Tone": "={{ $('On form submission').item.json.Tone }}",
+            "Platform": "={{ $('On form submission').item.json.Platform }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Topic",
+              "displayName": "Topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post",
+              "displayName": "Post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Platform",
+              "displayName": "Platform",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tone",
+              "displayName": "Tone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        832,
+        0
+      ],
+      "id": "bc8f36eb-11f2-4e79-83ac-9a74090eea80",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jNznwvRoRCpLgg5S",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Social Media Post Topic",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Topic",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Platform",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "LinkdIn"
+                  },
+                  {
+                    "option": "Instagram"
+                  },
+                  {
+                    "option": "Facebook"
+                  },
+                  {
+                    "option": "Twitter"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Tone",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Professional"
+                  },
+                  {
+                    "option": "Casual"
+                  },
+                  {
+                    "option": "Educational"
+                  },
+                  {
+                    "option": "Motivational"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "815fdc55-ae22-4da2-b1d7-2ee6601d0037",
+      "name": "On form submission",
+      "webhookId": "3947f84a-d6d2-49bd-9924-06c1de297c75"
+    },
+    {
+      "parameters": {
+        "sendTo": "hibalatif698@gmail.com",
+        "subject": "Social Media Post Generated",
+        "message": "=Dear Hiba!\nThat is your post:\n{{ $json.Post }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "8d4f1092-c1d0-4a92-b940-e9d1389fdcc7",
+      "name": "Send a message",
+      "webhookId": "fa6ac671-a8c3-41a6-bfd5-ed8f612254ca",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIALS_ID",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "1eb673fd-3058-419a-8148-c5b5050a9423",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d1b8d084b83554026de34327f1ae7201c90a833d4c236849a5e4143d0a41ad36"
+  },
+  "id": "mwMQLDcGCjHaOIs7",
+  "tags": []
+}
