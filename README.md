@@ -45,7 +45,7 @@ What business process would you automate first?
 ## Workflow Screenshot
 
 ![Workflow](workflow2.png)
-![Workflow](google_sheet_msg.png)
+![Workflow](google_sheet.png)
 ![Workflow](gmail_msg2.png)
 
 ## Setup
