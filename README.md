@@ -42,6 +42,11 @@ Form Trigger → Groq API → Extract Response → Google Sheets → Send Email
 What business process would you automate first?
 
 #AI #Automation #Technology #Innovation
+## Workflow Screenshot
+
+![Workflow](workflow2.png)
+![Workflow](google_sheet_msg.png)
+![Workflow](gmail_msg2.png)
 
 ## Setup
 
